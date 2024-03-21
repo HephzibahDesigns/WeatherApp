@@ -1,6 +1,7 @@
 import StackNavigation from "./Navigation/StackNavigation";
 import { useFonts } from "expo-font";
 import { NavigationContainer } from "@react-navigation/native";
+import { StatusBar } from "react-native";
 
 export default function App() {
   const [fontsLoaded, fontError] = useFonts({
@@ -11,6 +12,7 @@ export default function App() {
   });
   return (
     <NavigationContainer>
+      <StatusBar barStyle="light-content" backgroundColor="#2d3283" />
       <StackNavigation />
     </NavigationContainer>
   );

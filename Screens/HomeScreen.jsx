@@ -13,6 +13,7 @@ import React, { useState, useCallback, useRef } from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Fragment } from "react";
 import axios from "axios";
+import { weatherImages } from "../constants/index.js";
 
 export default function HomeScreen() {
   const [showSearch, toggleSearch] = useState(false);
@@ -27,9 +28,7 @@ export default function HomeScreen() {
   // Calling Api
   const API_KEY = "c6ee337751ec41d09f510225241403";
 
-  // const ForeCastUrl = `https://api.tomorrow.io/v4/weather/forecast?location=${city}&apikey=${API_KEY}`;
-
-  const LocationUrl = ` https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${city}&days=1&aqi=no&alerts=no `;
+  const LocationUrl = ` https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${city}&days=7&aqi=no&alerts=no `;
 
   const fetchLocationData = useCallback(() => {
     setIsLoading(true);
@@ -50,6 +49,32 @@ export default function HomeScreen() {
         const wind_mph = jsonResponse.data.current.wind_mph;
         const name = jsonResponse.data.location.name;
         const country = jsonResponse.data.location.country;
+
+        const dayOfWeek = [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ];
+
+        const day = jsonResponse.data.forecast.forecastday.map(
+          (item, index) => {
+            const date = new Date(item.date);
+            return dayOfWeek[date.getDay()];
+          }
+        );
+
+        const averageTemp = jsonResponse.data.forecast.forecastday.map(
+          (item, index) => {
+            return item.day.avgtemp_c;
+          }
+        );
+
+        console.log(day);
+        console.log(averageTemp);
 
         // Parse the time string into a Date object
         const date = new Date(time);
@@ -82,6 +107,8 @@ export default function HomeScreen() {
           country,
           tempCondition,
           formattedTime,
+          day,
+          averageTemp,
         });
       })
       .catch((error) => {
@@ -119,23 +146,8 @@ export default function HomeScreen() {
     toggleSearch(!showSearch);
   };
 
-  // const fetchData = async () => {
-  //   const options = { method: "GET", headers: { accept: "application/json" } };
-
-  //   setTimeout(() => {
-  //     fetch(ForeCastUrl, options)
-  //       .then((response) => response.json())
-  //       .then((response) => {
-  //         console.log("resp: ", response.data), setForecastData(response.data);
-  //       })
-  //       .catch((err) => console.error(err));
-  //   }, 1200);
-  // };
-
   return (
     <View>
-      <StatusBar barStyle="light-content" backgroundColor="#2d3283" />
-
       <View className="flex items-center relative">
         <Image
           source={require("../assets/night.png")}
@@ -203,7 +215,7 @@ export default function HomeScreen() {
                 <View className="flex justify-center py-10">
                   {/* Use the appropriate image source based on the weather condition */}
                   <Image
-                    source={require("../assets/partly-cloudy.png")}
+                    source={weatherImages[locationSearch.tempCondition]}
                     style={{ width: 200, height: 200, resizeMode: "contain" }}
                   />
                 </View>
@@ -347,52 +359,155 @@ export default function HomeScreen() {
             showHorizontalScrollIndicator={false}
             className="space-x-6"
           >
-            <View className=" flex justify-center items-center w-24 py-2 my-4 bg-white/20 rounded-xl relative">
-              <Image
-                source={require("../assets/partly-cloudy.png")}
-                style={{
-                  width: 50,
-                  height: 50,
-                  resizeMode: "contain",
-                }}
-              />
-              <Text className=" text-white text-sm font-medium ">Monday</Text>
-              <Text className="text-center text-lg text-white font-semibold">
-                13&#176;
-              </Text>
-            </View>
+            {locationSearch ? (
+              <View className="flex flex-row space-x-3">
+                {locationSearch.day.map((dayName, index) => (
+                  <View className="flex justify-center items-center w-24 py-2 my-4 bg-white/20 rounded-xl relative">
+                    <Image
+                      source={require("../assets/partly-cloudy.png")}
+                      style={{
+                        width: 50,
+                        height: 50,
+                        resizeMode: "contain",
+                      }}
+                    />
 
-            <View className=" flex justify-center items-center w-24 py-2 my-4 bg-white/20 rounded-xl">
-              <Image
-                source={require("../assets/partly-cloudy.png")}
-                style={{
-                  width: 50,
-                  height: 50,
-                  resizeMode: "contain",
-                }}
-              />
-              <Text className=" text-white text-sm font-medium z-10">
-                Tuesday
-              </Text>
-              <Text className="text-center text-lg text-white font-semibold">
-                13&#176;
-              </Text>
-            </View>
+                    <Text
+                      className=" text-white text-sm font-medium "
+                      key={index}
+                    >
+                      {dayName}
+                      {index < locationSearch.day.length - 1 ? ", " : ""}
+                    </Text>
 
-            <View className=" flex justify-center items-center w-24 py-2 my-4 bg-white/20 rounded-xl">
-              <Image
-                source={require("../assets/partly-cloudy.png")}
-                style={{
-                  width: 50,
-                  height: 50,
-                  resizeMode: "contain",
-                }}
-              />
-              <Text className=" text-white text-sm font-medium">Wednesday</Text>
-              <Text className="text-center text-lg text-white font-semibold">
-                13&#176;
-              </Text>
-            </View>
+                    <Text className="text-center text-lg text-white font-semibold">
+                      13&#176;
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            ) : (
+              <Fragment>
+                <View className="flex justify-center items-center w-24 py-2 my-4 bg-white/20 rounded-xl relative">
+                  <Image
+                    source={require("../assets/partly-cloudy.png")}
+                    style={{
+                      width: 50,
+                      height: 50,
+                      resizeMode: "contain",
+                    }}
+                  />
+                  <Text className=" text-white text-sm font-medium ">
+                    Monday
+                  </Text>
+                  <Text className="text-center text-lg text-white font-semibold">
+                    13&#176;
+                  </Text>
+                </View>
+
+                <View className="flex justify-center items-center w-24 py-2 my-4 bg-white/20 rounded-xl relative">
+                  <Image
+                    source={require("../assets/partly-cloudy.png")}
+                    style={{
+                      width: 50,
+                      height: 50,
+                      resizeMode: "contain",
+                    }}
+                  />
+                  <Text className=" text-white text-sm font-medium ">
+                    Tuesday
+                  </Text>
+                  <Text className="text-center text-lg text-white font-semibold">
+                    28&#176;
+                  </Text>
+                </View>
+
+                <View className="flex justify-center items-center w-24 py-2 my-4 bg-white/20 rounded-xl relative">
+                  <Image
+                    source={require("../assets/partly-cloudy.png")}
+                    style={{
+                      width: 50,
+                      height: 50,
+                      resizeMode: "contain",
+                    }}
+                  />
+                  <Text className=" text-white text-sm font-medium ">
+                    Wedsday
+                  </Text>
+                  <Text className="text-center text-lg text-white font-semibold">
+                    10&#176;
+                  </Text>
+                </View>
+
+                <View className="flex justify-center items-center w-24 py-2 my-4 bg-white/20 rounded-xl relative">
+                  <Image
+                    source={require("../assets/partly-cloudy.png")}
+                    style={{
+                      width: 50,
+                      height: 50,
+                      resizeMode: "contain",
+                    }}
+                  />
+                  <Text className=" text-white text-sm font-medium ">
+                    Thursday
+                  </Text>
+                  <Text className="text-center text-lg text-white font-semibold">
+                    20&#176;
+                  </Text>
+                </View>
+
+                <View className="flex justify-center items-center w-24 py-2 my-4 bg-white/20 rounded-xl relative">
+                  <Image
+                    source={require("../assets/partly-cloudy.png")}
+                    style={{
+                      width: 50,
+                      height: 50,
+                      resizeMode: "contain",
+                    }}
+                  />
+                  <Text className=" text-white text-sm font-medium ">
+                    Friday
+                  </Text>
+                  <Text className="text-center text-lg text-white font-semibold">
+                    20&#176;
+                  </Text>
+                </View>
+
+                <View className="flex justify-center items-center w-24 py-2 my-4 bg-white/20 rounded-xl relative">
+                  <Image
+                    source={require("../assets/partly-cloudy.png")}
+                    style={{
+                      width: 50,
+                      height: 50,
+                      resizeMode: "contain",
+                    }}
+                  />
+                  <Text className=" text-white text-sm font-medium ">
+                    Saturday
+                  </Text>
+                  <Text className="text-center text-lg text-white font-semibold">
+                    20&#176;
+                  </Text>
+                </View>
+
+                <View className="flex justify-center items-center w-24 py-2 my-4 bg-white/20 rounded-xl relative">
+                  <Image
+                    source={require("../assets/partly-cloudy.png")}
+                    style={{
+                      width: 50,
+                      height: 50,
+                      resizeMode: "contain",
+                    }}
+                  />
+                  <Text className=" text-white text-sm font-medium ">
+                    Sunday
+                  </Text>
+                  <Text className="text-center text-lg text-white font-semibold">
+                    20&#176;
+                  </Text>
+                </View>
+              </Fragment>
+            )}
           </ScrollView>
         </View>
       </ScrollView>
