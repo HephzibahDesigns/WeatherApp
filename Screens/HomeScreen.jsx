@@ -9,11 +9,12 @@ import {
   ScrollView,
   ActivityIndicator,
 } from "react-native";
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Fragment } from "react";
 import axios from "axios";
 import { weatherImages } from "../constants/index.js";
+import { getData, saveData } from "../constants/AsyncStorage.js";
 
 export default function HomeScreen() {
   const [showSearch, toggleSearch] = useState(false);
@@ -23,7 +24,32 @@ export default function HomeScreen() {
 
   const debounceTimeout = useRef(null);
 
-  // const [forecastData, setForecastData] = useState([]);
+  useEffect(() => {
+    // Load city data from AsyncStorage on component mount
+    loadCityFromStorage();
+  }, []);
+
+  // Function to load city data from AsyncStorage
+  const loadCityFromStorage = async () => {
+    try {
+      const savedCity = await getData("city"); // Use getData function to retrieve city from AsyncStorage
+      if (savedCity) {
+        setCity(savedCity);
+        fetchLocationData(savedCity); // Fetch weather data for the saved city
+      }
+    } catch (error) {
+      console.error("Error loading city from AsyncStorage:", error);
+    }
+  };
+
+  // Function to save city data to AsyncStorage
+  const saveCityToStorage = async (cityName) => {
+    try {
+      await saveData("city", cityName); // Use saveData function to save city to AsyncStorage
+    } catch (error) {
+      console.error("Error saving city to AsyncStorage:", error);
+    }
+  };
 
   // Calling Api
   const API_KEY = "c6ee337751ec41d09f510225241403";
@@ -62,19 +88,18 @@ export default function HomeScreen() {
 
         const day = jsonResponse.data.forecast.forecastday.map(
           (item, index) => {
+            // console.log("Item:", item.day.avgtemp_c); // Log the item to inspect its structure
             const date = new Date(item.date);
-            return dayOfWeek[date.getDay()];
+            const averageTemp = item.day.avgtemp_c;
+            const tempCondition = item.day.condition.text;
+            console.log(tempCondition);
+            return {
+              dayOfWeek: dayOfWeek[date.getDay()],
+              averageTemp: averageTemp,
+              temperatureCondition: tempCondition,
+            };
           }
         );
-
-        const averageTemp = jsonResponse.data.forecast.forecastday.map(
-          (item, index) => {
-            return item.day.avgtemp_c;
-          }
-        );
-
-        console.log(day);
-        console.log(averageTemp);
 
         // Parse the time string into a Date object
         const date = new Date(time);
@@ -108,7 +133,6 @@ export default function HomeScreen() {
           tempCondition,
           formattedTime,
           day,
-          averageTemp,
         });
       })
       .catch((error) => {
@@ -136,7 +160,7 @@ export default function HomeScreen() {
     try {
       setCity("");
       setLocationSearch(null);
-      // await fetchData();
+      await saveCityToStorage(city);
     } catch (error) {
       console.error("Error handling location:", error);
     }
@@ -361,10 +385,13 @@ export default function HomeScreen() {
           >
             {locationSearch ? (
               <View className="flex flex-row space-x-3">
-                {locationSearch.day.map((dayName, index) => (
-                  <View className="flex justify-center items-center w-24 py-2 my-4 bg-white/20 rounded-xl relative">
+                {locationSearch.day.map((dayData, index) => (
+                  <View
+                    className="flex justify-center items-center w-24 py-2 my-4 bg-white/20 rounded-xl relative"
+                    key={index}
+                  >
                     <Image
-                      source={require("../assets/partly-cloudy.png")}
+                      source={weatherImages[dayData.temperatureCondition]}
                       style={{
                         width: 50,
                         height: 50,
@@ -372,16 +399,13 @@ export default function HomeScreen() {
                       }}
                     />
 
-                    <Text
-                      className=" text-white text-sm font-medium "
-                      key={index}
-                    >
-                      {dayName}
+                    <Text className=" text-white text-sm font-medium ">
+                      {dayData.dayOfWeek}
                       {index < locationSearch.day.length - 1 ? ", " : ""}
                     </Text>
 
                     <Text className="text-center text-lg text-white font-semibold">
-                      13&#176;
+                      {dayData.averageTemp}&#176;
                     </Text>
                   </View>
                 ))}

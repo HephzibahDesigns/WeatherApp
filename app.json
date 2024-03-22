@@ -11,7 +11,9 @@
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["assets/fonts/*"],
+    "assetBundlePatterns": [
+      "assets/fonts/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -19,11 +21,19 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.hephzibah.WeatherApp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": ["expo-font"]
+    "plugins": [
+      "expo-font"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "edac10ca-7497-4a5a-b830-a51251d3a520"
+      }
+    }
   }
 }
