@@ -14,7 +14,6 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { Fragment } from "react";
 import axios from "axios";
 import { weatherImages } from "../constants/index.js";
-import { getData, saveData } from "../constants/AsyncStorage.js";
 
 export default function HomeScreen() {
   const [showSearch, toggleSearch] = useState(false);
@@ -23,33 +22,6 @@ export default function HomeScreen() {
   const [isLoading, setIsLoading] = useState(false);
 
   const debounceTimeout = useRef(null);
-
-  useEffect(() => {
-    // Load city data from AsyncStorage on component mount
-    loadCityFromStorage();
-  }, []);
-
-  // Function to load city data from AsyncStorage
-  const loadCityFromStorage = async () => {
-    try {
-      const savedCity = await getData("city"); // Use getData function to retrieve city from AsyncStorage
-      if (savedCity) {
-        setCity(savedCity);
-        fetchLocationData(savedCity); // Fetch weather data for the saved city
-      }
-    } catch (error) {
-      console.error("Error loading city from AsyncStorage:", error);
-    }
-  };
-
-  // Function to save city data to AsyncStorage
-  const saveCityToStorage = async (cityName) => {
-    try {
-      await saveData("city", cityName); // Use saveData function to save city to AsyncStorage
-    } catch (error) {
-      console.error("Error saving city to AsyncStorage:", error);
-    }
-  };
 
   // Calling Api
   const API_KEY = "c6ee337751ec41d09f510225241403";
@@ -160,7 +132,6 @@ export default function HomeScreen() {
     try {
       setCity("");
       setLocationSearch(null);
-      await saveCityToStorage(city);
     } catch (error) {
       console.error("Error handling location:", error);
     }

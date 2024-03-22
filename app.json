@@ -7,19 +7,17 @@
     "icon": "./assets/partly-cloudy.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/weather.png",
+      "image": "./assets/3d-sun.png",
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "assets/fonts/*"
-    ],
+    "assetBundlePatterns": ["assets/fonts/*"],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/3D SUN.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.hephzibah.WeatherApp"
@@ -27,13 +25,17 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "expo-font"
-    ],
+    "plugins": ["expo-font"],
     "extra": {
       "eas": {
         "projectId": "edac10ca-7497-4a5a-b830-a51251d3a520"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/edac10ca-7497-4a5a-b830-a51251d3a520"
     }
   }
 }
