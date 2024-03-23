@@ -1,6 +1,6 @@
 export const weatherImages = {
-  Sunny: require("../assets/3d-sun.png"),
-  "Sunny ": require("../assets/3d-sun.png"),
+  Sunny: require("../assets/3dSUN.png"),
+  "Sunny ": require("../assets/3dSUN.png"),
   Clear: require("../assets/cloudy.png"),
   "Clear ": require("../assets/cloudy.png"),
   "Overcast ": require("../assets/cloudy.png"),

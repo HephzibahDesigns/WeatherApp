@@ -60,7 +60,6 @@ export default function HomeScreen() {
 
         const day = jsonResponse.data.forecast.forecastday.map(
           (item, index) => {
-            // console.log("Item:", item.day.avgtemp_c); // Log the item to inspect its structure
             const date = new Date(item.date);
             const averageTemp = item.day.avgtemp_c;
             const tempCondition = item.day.condition.text;

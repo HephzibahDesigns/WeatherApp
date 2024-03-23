@@ -11,13 +11,13 @@
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["assets/fonts/*"],
+    "assetBundlePatterns": ["assets/fonts/*", "assets/3d-sun.png"],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/3D SUN.png",
+        "foregroundImage": "./assets/3dSUN.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.hephzibah.WeatherApp"
