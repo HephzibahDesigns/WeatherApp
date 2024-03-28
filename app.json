@@ -8,17 +8,24 @@
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/3d-sun.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#ffffff"
+      "resizeMode": "cover"
     },
-    "assetBundlePatterns": ["assets/fonts/*", "assets/3d-sun.png"],
+    "assetBundlePatterns": ["assets/fonts/*", "./assets/3d-sun.png"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "splash": {
+        "image": "./assets/3d-sun.png",
+        "resizeMode": "cover"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/3dSUN.png",
         "backgroundColor": "#ffffff"
+      },
+      "splash": {
+        "image": "./assets/3d-sun.png",
+        "resizeMode": "cover"
       },
       "package": "com.hephzibah.WeatherApp"
     },

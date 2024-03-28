@@ -73,9 +73,7 @@ export default function HomeScreen() {
         );
 
         // Parse the time string into a Date object
-        const date = new Date(time);
-
-        // Format the time (assuming 12-hour format with AM/PM)
+        const date = new Date(time); // Format the time (assuming 12-hour format with AM/PM)
         const hours = date.getHours() % 12 || 12; // Get hours in 12-hour format
         const minutes = date.getMinutes();
         const period = date.getHours() >= 12 ? "PM" : "AM"; // Determine AM or PM
@@ -93,6 +91,7 @@ export default function HomeScreen() {
         console.log("country :", country);
         console.log("tempCondition :", tempCondition);
         console.log("wind: ", wind_mph);
+        console.log("day: ", day);
 
         // Set the extracted data to the locationSearch state
         setLocationSearch({
@@ -371,6 +370,7 @@ export default function HomeScreen() {
 
                     <Text className=" text-white text-sm font-medium ">
                       {dayData.dayOfWeek}
+
                       {index < locationSearch.day.length - 1 ? ", " : ""}
                     </Text>
 
