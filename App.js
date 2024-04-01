@@ -1,5 +1,11 @@
 import StackNavigation from "./Navigation/StackNavigation";
-import { useFonts } from "expo-font";
+import {
+  useFonts,
+  Poppins_400Regular,
+  Poppins_500Medium,
+  Poppins_700Bold,
+  Poppins_300Light,
+} from "@expo-google-fonts/dev";
 import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
@@ -37,10 +43,10 @@ export default function App() {
   }, []);
 
   const [fontsLoaded] = useFonts({
-    "Poppins-Bold": require("./assets/fonts/Poppins-Bold.ttf"),
-    "Poppins-Light": require("./assets/fonts/Poppins-Light.ttf"),
-    "Poppins-Regular": require("./assets/fonts/Poppins-Regular.ttf"),
-    "Poppins-Medium": require("./assets/fonts/Poppins-Medium.ttf"),
+    Poppins_400Regular,
+    Poppins_500Medium,
+    Poppins_700Bold,
+    Poppins_300Light,
   });
 
   return (

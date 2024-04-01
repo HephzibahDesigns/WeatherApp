@@ -64,6 +64,8 @@ export default function HomeScreen() {
             const averageTemp = item.day.avgtemp_c;
             const tempCondition = item.day.condition.text;
             console.log(tempCondition);
+            console.log(date);
+
             return {
               dayOfWeek: dayOfWeek[date.getDay()],
               averageTemp: averageTemp,
@@ -197,9 +199,15 @@ export default function HomeScreen() {
           <View className="flex flex-col items-center mt-8">
             {locationSearch ? (
               <Fragment>
-                <Text className="text-white text-xl font-bold">
+                <Text
+                  className="text-white text-xl font-bold"
+                  style={{ fontFamily: "Poppins_500Medium" }}
+                >
                   {locationSearch.name} {", "}
-                  <Text className="text-gray-100 text-base font-medium">
+                  <Text
+                    className="text-gray-100 text-base"
+                    style={{ fontFamily: "Poppins_400Regular" }}
+                  >
                     {locationSearch.country}
                   </Text>
                 </Text>
@@ -215,22 +223,31 @@ export default function HomeScreen() {
 
                 {/* Degree celcius */}
                 <View className="my-3">
-                  <Text className="text-center text-4xl text-white font-medium">
+                  <Text
+                    className="text-center text-4xl text-white"
+                    style={{ fontFamily: "Poppins_500Medium" }}
+                  >
                     {locationSearch.temperature}&#176;
                   </Text>
-                  <Text className="text-center text-xl font-normal text-white tracking-widest">
+                  <Text
+                    className="text-center text-xl font-normal text-white tracking-widest"
+                    style={{ fontFamily: "Poppins_400Regular" }}
+                  >
                     {locationSearch.tempCondition}
                   </Text>
                 </View>
 
                 {/* Other Stats */}
-                <View className="flex flex-row items-center space-x-10 my-10">
+                <View className="flex flex-row items-center space-x-8 my-10">
                   <View className="flex flex-row items-center space-x-2">
                     <Image
                       source={require("../assets/wind.png")}
                       style={{ width: 20, height: 20, resizeMode: "contain" }}
                     />
-                    <Text className="text-white text-base font-medium">
+                    <Text
+                      className="text-white text-base font-medium"
+                      style={{ fontFamily: "Poppins_500Medium" }}
+                    >
                       {locationSearch.wind_mph} MPH
                     </Text>
                   </View>
@@ -240,7 +257,10 @@ export default function HomeScreen() {
                       source={require("../assets/Humidity.png")}
                       style={{ width: 20, height: 20, resizeMode: "contain" }}
                     />
-                    <Text className="text-white text-base font-medium">
+                    <Text
+                      className="text-white text-base font-medium"
+                      style={{ fontFamily: "Poppins_500Medium" }}
+                    >
                       {locationSearch.humidity} %
                     </Text>
                   </View>
@@ -254,7 +274,10 @@ export default function HomeScreen() {
                         resizeMode: "contain",
                       }}
                     />
-                    <Text className="text-white text-base font-medium">
+                    <Text
+                      className="text-white text-base font-medium"
+                      style={{ fontFamily: "Poppins_500Medium" }}
+                    >
                       {locationSearch.formattedTime}
                     </Text>
                   </View>
@@ -350,7 +373,7 @@ export default function HomeScreen() {
           <ScrollView
             horizontal={true}
             showHorizontalScrollIndicator={false}
-            className="space-x-6"
+            className="space-x-3"
           >
             {locationSearch ? (
               <View className="flex flex-row space-x-3">
@@ -368,13 +391,17 @@ export default function HomeScreen() {
                       }}
                     />
 
-                    <Text className=" text-white text-sm font-medium ">
+                    <Text
+                      className=" text-white text-sm py-1"
+                      style={{ fontFamily: "Poppins_500Medium" }}
+                    >
                       {dayData.dayOfWeek}
-
-                      {index < locationSearch.day.length - 1 ? ", " : ""}
                     </Text>
 
-                    <Text className="text-center text-lg text-white font-semibold">
+                    <Text
+                      className="text-center text-lg text-white"
+                      style={{ fontFamily: "Poppins_700Bold" }}
+                    >
                       {dayData.averageTemp}&#176;
                     </Text>
                   </View>
@@ -426,7 +453,7 @@ export default function HomeScreen() {
                     }}
                   />
                   <Text className=" text-white text-sm font-medium ">
-                    Wedsday
+                    Wednesday
                   </Text>
                   <Text className="text-center text-lg text-white font-semibold">
                     10&#176;
